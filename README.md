@@ -4,6 +4,8 @@ A small **MSCCL++ PortChannel** experiment for determining when chunked GPU prod
 
 **Status:** the real CUDA extension compiles; 72 single-GPU compute/reference cases pass NVIDIA Compute Sanitizer; CPU protocol and analysis tests pass. **Two-GPU communication correctness and overlap performance remain unvalidated.**
 
+The [September maintenance review](docs/MAINTENANCE_2026-09-07.md) adds rank/preflight admission, recorded launch failures and uncertainty-aware comparisons. [Hiring and upstream research](docs/MARKET_REVIEW_2026-09-07.md) explains the scope.
+
 ## The experiment
 
 Each rank computes a generation-dependent `uint32` payload and sends it to the other GPU using the pinned MSCCL++ CudaIpc connection and host proxy. Three configurations share the same compute workload:
@@ -21,7 +23,7 @@ The independent host reference composes the payload's affine transform by expone
 | Check | Local result |
 |---|---|
 | Pinned MSCCL++ library and CUDA extension | Built with CUDA 13.2, `sm_89`, CudaIpc; IB/GDRCopy disabled |
-| CPU regression suite | 7 tests passed |
+| CPU regression suite | 20 tests passed |
 | Finite protocol model | Ordered 3-generation model explored 25 states; missing acknowledgement and early publication each produced a counterexample |
 | Real GPU compute/reference test | 72 cases passed; Compute Sanitizer memcheck reported 0 errors |
 | Two-GPU eligibility | Correctly blocked on the one-GPU workstation |
@@ -50,7 +52,7 @@ On a machine with two peer-accessible GPUs:
 python3 run.py --binary build/overlap --out evidence/local/two-gpu-run
 ```
 
-The supervisor reaps both ranks on failure or timeout. It accepts performance samples only after both ranks report correct, complete sequences. Paired repetitions compare the slower-rank completion time, with a descriptive ±5% no-material-gain region. Profiles and repeated-trial uncertainty still require review before qualification.
+The supervisor reaps both ranks on failure or timeout. It accepts performance samples only after both ranks report correct, complete sequences. Seven process-repeat pairs compare the slower-rank completion time by default. An exact binomial/order-statistic median interval must clear a ±5% margin before a benefit or regression label is emitted. Fewer than six pairs cannot form a finite 95% interval under this method; noisy trials remain inconclusive. These are pointwise intervals, not simultaneous guarantees across the parameter grid. Profiles and target-host correctness still require review before qualification.
 
 ```bash
 python3 scripts/export_evidence.py --out evidence/new-snapshot

@@ -14,3 +14,5 @@ jobs:
         run: python3 -m unittest discover -s tests -v
       - name: Verify published evidence receipts
         run: python3 scripts/export_evidence.py --verify evidence/snapshot
+      - name: Verify maintenance evidence receipts
+        run: python3 scripts/export_evidence.py --verify evidence/maintenance-20260907

@@ -8,7 +8,7 @@ Each case compared every produced word against an independent host affine-compos
 
 ## Executed on CPU
 
-Seven regression tests passed. They include finite protocol exploration, failing counterexamples when acknowledgement/publication ordering is removed, rejecting missing/duplicate/incorrect rank records, and selecting the slower rank's completion time. The correct three-generation model explored 25 states.
+The original seven regression tests passed. The September maintenance suite now has 20 tests; see [the maintenance report](MAINTENANCE_2026-09-07.md). They include finite protocol exploration, failing counterexamples when acknowledgement/publication ordering is removed, rejecting missing/duplicate/incorrect rank records, and selecting the slower rank's completion time. The correct three-generation model explored 25 states.
 
 ## Hardware gate
 

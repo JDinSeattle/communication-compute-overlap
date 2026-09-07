@@ -1,0 +1,3 @@
+========= COMPUTE-SANITIZER
+{"scope":"single_gpu_compute_only","status":"pass","cases":72,"communication_tested":false,"reference":"host_affine_composition"}
+========= ERROR SUMMARY: 0 errors

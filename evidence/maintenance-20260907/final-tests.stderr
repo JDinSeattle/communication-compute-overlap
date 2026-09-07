@@ -1,0 +1,25 @@
+test_cli_analysis_with_synthetic_rank_workers (test_acceptance.ProcessAcceptanceTests.test_cli_analysis_with_synthetic_rank_workers) ... ok
+test_exit_zero_without_rank_evidence_fails (test_acceptance.ProcessAcceptanceTests.test_exit_zero_without_rank_evidence_fails) ... ok
+test_launch_failure_is_recorded (test_acceptance.ProcessAcceptanceTests.test_launch_failure_is_recorded) ... ok
+test_real_peer_exit_reaps_waiting_peer (test_acceptance.ProcessAcceptanceTests.test_real_peer_exit_reaps_waiting_peer) ... ok
+test_real_timeout_has_no_performance (test_acceptance.ProcessAcceptanceTests.test_real_timeout_has_no_performance) ... ok
+test_boolean_aliases_missing_checksum_and_reordered_result (test_acceptance.RankAcceptanceTests.test_boolean_aliases_missing_checksum_and_reordered_result) ... ok
+test_hardware_readiness_requires_both_peer_directions (test_acceptance.RankAcceptanceTests.test_hardware_readiness_requires_both_peer_directions) ... ok
+test_rank_cardinality (test_acceptance.RankAcceptanceTests.test_rank_cardinality) ... ok
+test_bad_ratios_and_exact_threshold (test_acceptance.StatisticalTests.test_bad_ratios_and_exact_threshold) ... ok
+test_interval_coverage_by_exhaustive_sign_patterns (test_acceptance.StatisticalTests.test_interval_coverage_by_exhaustive_sign_patterns) ... ok
+test_noisy_positive_median_remains_inconclusive (test_acceptance.StatisticalTests.test_noisy_positive_median_remains_inconclusive) ... ok
+test_separated_and_equivalent_regions (test_acceptance.StatisticalTests.test_separated_and_equivalent_regions) ... ok
+test_three_repeats_cannot_establish_benefit (test_acceptance.StatisticalTests.test_three_repeats_cannot_establish_benefit) ... ok
+test_benefit_regions (test_protocol.ProtocolTests.test_benefit_regions) ... ok
+test_correctness_precedes_performance (test_protocol.ProtocolTests.test_correctness_precedes_performance) ... ok
+test_early_signal_has_stale_witness (test_protocol.ProtocolTests.test_early_signal_has_stale_witness) ... ok
+test_missing_ack_has_overwrite_witness (test_protocol.ProtocolTests.test_missing_ack_has_overwrite_witness) ... ok
+test_missing_duplicate_or_bad_timing_rejected (test_protocol.ProtocolTests.test_missing_duplicate_or_bad_timing_rejected) ... ok
+test_ordered_protocol_exhaustion (test_protocol.ProtocolTests.test_ordered_protocol_exhaustion) ... ok
+test_slower_rank_is_critical_path (test_protocol.ProtocolTests.test_slower_rank_is_critical_path) ... ok
+
+----------------------------------------------------------------------
+Ran 20 tests in 0.712s
+
+OK

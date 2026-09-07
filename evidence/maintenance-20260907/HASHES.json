@@ -1,0 +1,87 @@
+{
+  "timestamp_utc": "2026-09-07T22:39:35.475002+00:00",
+  "files": [
+    {
+      "path": "compute-sanitizer.stderr",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exported_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "compute-sanitizer.stdout",
+      "original_sha256": "f9deb1b916910dc5239496785cb529440f625c9633e8fb10cc0831cddb689943",
+      "exported_sha256": "f9deb1b916910dc5239496785cb529440f625c9633e8fb10cc0831cddb689943"
+    },
+    {
+      "path": "final-tests.stderr",
+      "original_sha256": "69791b377894c84aa30ee3d5bb38e3b843522f77780250a7278f28768e0575ff",
+      "exported_sha256": "69791b377894c84aa30ee3d5bb38e3b843522f77780250a7278f28768e0575ff"
+    },
+    {
+      "path": "final-tests.stdout",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exported_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "gpu-self-test.stderr",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exported_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "gpu-self-test.stdout",
+      "original_sha256": "025bfc6c5a9d7c45bf1b594108904fb9a5826c8674634f261ff9af2d7d60777c",
+      "exported_sha256": "025bfc6c5a9d7c45bf1b594108904fb9a5826c8674634f261ff9af2d7d60777c"
+    },
+    {
+      "path": "hardware-gate/manifest.json",
+      "original_sha256": "094f6e2ff532366f74ee38c2f31c19d4c4f28906617d2afb6adb9f915efb6168",
+      "exported_sha256": "f14ec6af75d8ed129909444c90dfdf7069eaf043096330a26e156e543dc82c40"
+    },
+    {
+      "path": "hardware-gate/summary.json",
+      "original_sha256": "5683725edfb05cbedd53ee80f58c0538cf470602022157216bc892ea8bf5bb54",
+      "exported_sha256": "5683725edfb05cbedd53ee80f58c0538cf470602022157216bc892ea8bf5bb54"
+    },
+    {
+      "path": "hardware-gate.stderr",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exported_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "hardware-gate.stdout",
+      "original_sha256": "586bb2ce18d7a1a0c12c05aa9865536ccf099dbd50c531ceebeacbfcf3d852cb",
+      "exported_sha256": "586bb2ce18d7a1a0c12c05aa9865536ccf099dbd50c531ceebeacbfcf3d852cb"
+    },
+    {
+      "path": "tests.stderr",
+      "original_sha256": "7f878913fb15b57d9126c679b836603a490e39182c4ad7d232ce235e889937e4",
+      "exported_sha256": "7f878913fb15b57d9126c679b836603a490e39182c4ad7d232ce235e889937e4"
+    },
+    {
+      "path": "tests.stdout",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exported_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "verification.json",
+      "original_sha256": "547d3e4d9f5a5db4daf3b939351722e12e51b38c7ce37eb1964332b7903b4961",
+      "exported_sha256": "179dff601a28f8246e21e7e0e7c853d46c3f142d9d22737cc8e7d415f612d953"
+    }
+  ],
+  "export_time_source_sha256": {
+    "run.py": "f305f8940e9c99540001ab8dc8a7fa28c0f0bccdd049b7e0c2a86126f75a1902",
+    "model.py": "255eb110f842a6e5f1bb136860ccdf0a77334260d929b183a82025d95c986c42",
+    "analysis.py": "f5d35a12f07e80e26b7b5622fc15fefd7f23de85f42f4e2ffbc9ae654d39068b",
+    "src/overlap.cu": "04446c3897e01f89643902a01723b29947ba19b766e751e1dd9131f68c5b682c",
+    "scripts/build.py": "7e92ec3a6ed5ad5cc2b43f5e81e94ef99a90f8c4885527f5028bdd789eaf3e67",
+    "scripts/export_evidence.py": "f2c2d166bd7c860d6ad3b459e89eb715303aca87e5877d7654e424fcceda2eac",
+    "tests/test_acceptance.py": "21230b6cf16ef216e67b6f790059309b9d17bf4ee0f2ebeef198fae611e37b1c",
+    "tests/test_protocol.py": "878317e91a0ff6bd242bbbd2106b08836fcd25a638d3a54629418a5ed31670de"
+  },
+  "note": "Run metadata hashes refer to original local bytes. This receipt maps originals to redacted exports. Export-time source hashes are not a claim that every historical run used the final source.",
+  "redactions": [
+    "project directory",
+    "workspace directory",
+    "home directory",
+    "local hostname"
+  ]
+}

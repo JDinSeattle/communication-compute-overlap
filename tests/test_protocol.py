@@ -23,7 +23,7 @@ class ProtocolTests(unittest.TestCase):
     @staticmethod
     def logs():
         return ["\n".join(json.dumps(r) for r in [
-            {"kind":"sample","rank":rank,"sequence":1,"mode":"overlap","bytes":4096,"chunk_bytes":16384,"work":32,"correct":True,"wall_us":10+rank*4,"gpu_us":9,"process_cpu_us":12},
+            {"kind":"sample","rank":rank,"sequence":1,"mode":"overlap","bytes":4096,"chunk_bytes":16384,"work":32,"correct":True,"checksum":123,"wall_us":10+rank*4,"gpu_us":9,"process_cpu_us":12},
             {"kind":"result","rank":rank,"status":"pass","transport":"CudaIpc","channel":"PortChannel"}]) for rank in (0,1)]
 
     def test_slower_rank_is_critical_path(self):

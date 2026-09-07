@@ -13,6 +13,7 @@ import socket
 import statistics
 import subprocess
 import time
+from analysis import paired_comparison
 
 
 def save(p, x):
@@ -34,22 +35,33 @@ def terminate(proc):
 
 
 def validate_samples(logs, iterations, warmup, mode, size, chunk, work):
+    if len(logs) != 2:
+        raise ValueError("exactly two rank logs required")
     ranks = []
     for rank, text in enumerate(logs):
         entries = [json.loads(s) for s in text.splitlines() if s.startswith("{")]
+        # The native worker emits its hardware preflight before sample records.
+        if entries and "kind" not in entries[0] and ready({"returncode": 0, "stdout": json.dumps(entries[0])}):
+            entries = entries[1:]
+        if any(not isinstance(r, dict) or r.get("kind") not in ("sample", "result") for r in entries):
+            raise ValueError("unknown structured rank record")
         samples = [r for r in entries if r.get("kind") == "sample"]
         finals = [r for r in entries if r.get("kind") == "result"]
         if len(finals) != 1 or finals[0].get("status") != "pass" or finals[0].get("rank") != rank:
             raise ValueError("missing successful rank result")
         if finals[0].get("transport") != "CudaIpc" or finals[0].get("channel") != "PortChannel":
             raise ValueError("unrecognized transport/channel")
+        if entries[-1] is not finals[0] or type(finals[0].get("rank")) is not int:
+            raise ValueError("rank result must be the final structured record")
         if len(samples) != iterations or [s.get("sequence") for s in samples] != list(range(warmup+1,warmup+iterations+1)):
             raise ValueError("missing, duplicate, or reordered sequence")
         for s in samples:
-            if any(s.get(k) != v for k,v in {"rank":rank,"mode":mode,"bytes":size,"chunk_bytes":chunk,"work":work,"correct":True}.items()):
+            if any(type(s.get(k)) is not type(v) or s[k] != v for k,v in {"rank":rank,"mode":mode,"bytes":size,"chunk_bytes":chunk,"work":work,"correct":True}.items()):
                 raise ValueError("sample metadata/correctness mismatch")
+            if type(s.get("sequence")) is not int or type(s.get("checksum")) is not int or not 0 <= s["checksum"] < 2**64:
+                raise ValueError("invalid sequence or missing uint64 checksum")
             for key in ("wall_us", "gpu_us", "process_cpu_us"):
-                if not isinstance(s.get(key),(int,float)) or not math.isfinite(s[key]) or s[key]<0:
+                if type(s.get(key)) not in (int,float) or not math.isfinite(s[key]) or s[key]<0:
                     raise ValueError("invalid timing")
             if s["wall_us"] <= 0 or s["gpu_us"] <= 0:
                 raise ValueError("zero duration")
@@ -63,6 +75,7 @@ def pair(binary, out, size, chunk, work, mode, iterations, warmup, timeout):
     with socket.socket() as listener:
         listener.bind(("127.0.0.1",0)); port=listener.getsockname()[1]
     commands=[];procs=[];streams=[];status="pass"
+    error=None
     try:
         for rank in range(2):
             cmd=[str(binary),str(rank),str(rank),f"lo:127.0.0.1:{port}",str(size),str(chunk),str(work),str(iterations),str(warmup),mode]
@@ -76,10 +89,12 @@ def pair(binary, out, size, chunk, work, mode, iterations, warmup, timeout):
             if any(p.returncode not in (None,0) for p in procs): status="runtime_failure";break
             if time.monotonic()>=deadline:status="timeout";break
             time.sleep(.02)
+    except OSError as exc:
+        status="launch_failure";error=str(exc)
     finally:
         for proc in procs:terminate(proc)
         for stream in streams:stream.close()
-    samples=[];error=None
+    samples=[]
     if any(p.returncode!=0 for p in procs):status="runtime_failure" if status=="pass" else status
     if status=="pass":
         try: samples=validate_samples([(out/f"rank{r}.stdout").read_text() for r in range(2)],iterations,warmup,mode,size,chunk,work)
@@ -92,8 +107,21 @@ def pair(binary, out, size, chunk, work, mode, iterations, warmup, timeout):
 
 
 def region(speedup, margin=.05):
+    """Legacy point-estimate label only; acceptance uses paired_comparison."""
     if not math.isfinite(speedup) or speedup <= 0: raise ValueError("invalid speedup")
     return "beneficial" if speedup>1+margin else "regressed" if speedup<1-margin else "no_material_gain"
+
+
+def ready(preflight):
+    """An exit-zero executable still has to establish both peer directions."""
+    try:
+        value = json.loads(preflight["stdout"])
+        return (preflight["returncode"] == 0 and value["status"] == "ready"
+                and type(value["device_count"]) is int and value["device_count"] >= 2
+                and type(value["p2p_0_to_1"]) is int and value["p2p_0_to_1"] == 1
+                and type(value["p2p_1_to_0"]) is int and value["p2p_1_to_0"] == 1)
+    except (ValueError, KeyError, TypeError):
+        return False
 
 
 def main():
@@ -104,10 +132,11 @@ def main():
     p.add_argument("--work",nargs="+",type=int,default=[0,32,256])
     p.add_argument("--iterations",type=int,default=20)
     p.add_argument("--warmup",type=int,default=5)
-    p.add_argument("--repeats",type=int,default=3)
+    p.add_argument("--repeats",type=int,default=7)
     p.add_argument("--timeout",type=int,default=60)
     a=p.parse_args()
     if not all(16<=n<=128*1024*1024 and n%16==0 for n in a.sizes) or not all(0<=n<=4096 for n in a.work): p.error("invalid size or work")
+    if len(set(a.sizes)) != len(a.sizes) or len(set(a.work)) != len(a.work): p.error("duplicate experiment dimensions")
     if not(1<=a.iterations<=10000 and 0<=a.warmup<=1000 and 1<=a.repeats<=100 and 1<=a.timeout<=3600): p.error("invalid experiment bounds")
     a.out.mkdir(parents=True,exist_ok=False);binary=a.binary.resolve()
     preflight=capture([str(binary),"--preflight"])
@@ -119,7 +148,7 @@ def main():
               "cpu_affinity":sorted(os.sched_getaffinity(0)),
               "profile":None,"profile_missing_reason":"collect with Nsight Systems on the target two-GPU host before performance sign-off"}
     save(a.out/"manifest.json",manifest)
-    if preflight["returncode"]!=0:
+    if not ready(preflight):
         save(a.out/"summary.json",{"status":"blocked_hardware","qualification":False,"performance":[]})
         print("Blocked: two peer-accessible GPUs required. No overlap measurements recorded.");return 2
     records=[]
@@ -144,9 +173,8 @@ def main():
                     baseline=next(r for r in group if r["mode"]=="serial" and r["repeat"]==rep)
                     candidate=next(r for r in group if r["mode"]=="overlap" and r["chunk_bytes"]==chunk and r["repeat"]==rep)
                     ratios.append(baseline["median_us"]/candidate["median_us"])
-                speedup=statistics.median(ratios)
-                performance.append({"bytes":size,"work":work,"chunk_bytes":chunk,"median_paired_speedup":speedup,
-                                    "paired_ratios":ratios,"region":region(speedup),"classification_margin":.05})
+                performance.append({"bytes":size,"work":work,"chunk_bytes":chunk,
+                                    **paired_comparison(ratios)})
     save(a.out/"summary.json",{"status":"pass","qualification":False,"performance":performance,
                                 "remaining":"review target-host profiles, run compute-sanitizer, and inspect repeated-trial uncertainty before sign-off"})
     return 0

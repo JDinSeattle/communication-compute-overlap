@@ -1,0 +1,80 @@
+{
+  "timestamp_utc": "2026-09-07T22:34:35.386585+00:00",
+  "scope": "local_cpu_and_single_real_gpu",
+  "python": "3.14.4 (main, Jun 18 2026, 14:25:02) [GCC 15.2.0]",
+  "os": "Linux-7.0.0-29-generic-x86_64-with-glibc2.43",
+  "checks": [
+    {
+      "name": "tests",
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-v"
+      ],
+      "returncode": 0
+    },
+    {
+      "name": "gpu-self-test",
+      "command": [
+        "build/overlap",
+        "--self-test"
+      ],
+      "returncode": 0
+    },
+    {
+      "name": "compute-sanitizer",
+      "command": [
+        "compute-sanitizer",
+        "--tool",
+        "memcheck",
+        "--error-exitcode=9",
+        "build/overlap",
+        "--self-test"
+      ],
+      "returncode": 0
+    },
+    {
+      "name": "hardware-gate",
+      "command": [
+        "python3",
+        "run.py",
+        "--binary",
+        "build/overlap",
+        "--out",
+        "<PROJECT_ROOT>/evidence/local/maintenance-20260907/hardware-gate"
+      ],
+      "returncode": 2
+    }
+  ],
+  "source_sha256": {
+    "run.py": "1d07b4b4c02cc6cd8194e894023a527a96250388fa64332bcbc4dcdcfb014853",
+    "analysis.py": "f5d35a12f07e80e26b7b5622fc15fefd7f23de85f42f4e2ffbc9ae654d39068b",
+    "src/overlap.cu": "04446c3897e01f89643902a01723b29947ba19b766e751e1dd9131f68c5b682c"
+  },
+  "binary_sha256": "f5a4ddee9dffc629455250cb9c73d62beb179f6b0ab113100e0e5baf44977607",
+  "performance_claim": null,
+  "communication_verified": false,
+  "final_cpu_verification": {
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests",
+      "-v"
+    ],
+    "returncode": 0,
+    "timestamp_utc": "2026-09-07T22:39:35.439485+00:00",
+    "source_sha256": {
+      "run.py": "f305f8940e9c99540001ab8dc8a7fa28c0f0bccdd049b7e0c2a86126f75a1902",
+      "analysis.py": "f5d35a12f07e80e26b7b5622fc15fefd7f23de85f42f4e2ffbc9ae654d39068b",
+      "src/overlap.cu": "04446c3897e01f89643902a01723b29947ba19b766e751e1dd9131f68c5b682c"
+    },
+    "note": "Later changes only refine admission/configuration validation; GPU source is unchanged. Native execution source snapshot is retained above."
+  }
+}

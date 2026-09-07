@@ -17,3 +17,7 @@ python3 run.py --out evidence/local/two-gpu-small \
 ```
 
 The repository intentionally does not claim this recipe has passed on an unobserved target host. The final qualification remains incomplete until the device-channel correctness, timeout behavior, profiles and region analysis are all backed by target-host evidence.
+
+## Current comparison policy
+
+The default is seven independent process-repeat pairs per case. Preserve the alternating case order and use the slower rank for each iteration. `analysis.py` reports an exact median interval; at least six pairs are needed for a finite 95% interval. Classifications are pointwise and conditional on independent representative repeats. Investigate thermal/order drift and collect Nsight Systems profiles before any overlap claim; iteration samples within one process are not independent trials.
