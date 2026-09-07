@@ -1,0 +1,3 @@
+[ 50%] Building CUDA object CMakeFiles/overlap.dir/src/overlap.cu.o
+[100%] Linking CUDA executable overlap
+[100%] Built target overlap

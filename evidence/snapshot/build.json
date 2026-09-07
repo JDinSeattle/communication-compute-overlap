@@ -1,0 +1,14 @@
+{
+  "prefix": "/tmp/commnet-overlap-verified/install",
+  "arch": "89",
+  "lock": {
+    "mscclpp": {
+      "repository": "https://github.com/microsoft/mscclpp",
+      "revision": "de2e486304276b59c9ab4e23e4e2c911eca6b1cf"
+    },
+    "json": {
+      "repository": "https://github.com/nlohmann/json",
+      "revision": "55f93686c01528224f448c19128836e7df245f72"
+    }
+  }
+}

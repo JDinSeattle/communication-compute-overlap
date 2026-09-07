@@ -1,0 +1,75 @@
+{
+  "timestamp_utc": "2026-09-07T21:39:59.752114+00:00",
+  "files": [
+    {
+      "path": "build.json",
+      "original_sha256": "63808e9eb1878bf7fc74ac75dd9556978367df8e2d62b6b154a05ac055fb8a6b",
+      "exported_sha256": "63808e9eb1878bf7fc74ac75dd9556978367df8e2d62b6b154a05ac055fb8a6b"
+    },
+    {
+      "path": "build.log",
+      "original_sha256": "1a6e917992d8e1ce65f3e96051594bfcb7415d0d052755235b35dd7a5d1edd51",
+      "exported_sha256": "0301e76f7786e21da145a6573dafdc899bacf6324ea2bd9b99d7416f763f332f"
+    },
+    {
+      "path": "extension-build.log",
+      "original_sha256": "6930d8ab37bf2ca3088def1a50fcdf5b2ec2c2eb9ee7f78f3b185f8101462076",
+      "exported_sha256": "6930d8ab37bf2ca3088def1a50fcdf5b2ec2c2eb9ee7f78f3b185f8101462076"
+    },
+    {
+      "path": "final-two-gpu-gate/manifest.json",
+      "original_sha256": "cf70fb9b5be8d8e9ab12fb2a7761394a161ae7a4abd1b76f896d480a46deb5d9",
+      "exported_sha256": "a7fd6783713c3bb41968580334b5a686d20cec345a7e964db8466b6e4270ddab"
+    },
+    {
+      "path": "final-two-gpu-gate/summary.json",
+      "original_sha256": "5683725edfb05cbedd53ee80f58c0538cf470602022157216bc892ea8bf5bb54",
+      "exported_sha256": "5683725edfb05cbedd53ee80f58c0538cf470602022157216bc892ea8bf5bb54"
+    },
+    {
+      "path": "final-validation.json",
+      "original_sha256": "fb9aeb0b70b9e965fc214be17618929c061e5cd261fbd558d85b9989610945ca",
+      "exported_sha256": "0a38a240940786716e48e633c11f8d55d5c87b5d71587cd8d4ef5fcb5b3b1ed5"
+    },
+    {
+      "path": "gpu-selftest-memcheck.log",
+      "original_sha256": "f9deb1b916910dc5239496785cb529440f625c9633e8fb10cc0831cddb689943",
+      "exported_sha256": "f9deb1b916910dc5239496785cb529440f625c9633e8fb10cc0831cddb689943"
+    },
+    {
+      "path": "hardware-preflight/manifest.json",
+      "original_sha256": "be5af018a30552106930962872cfc542650ce4edf9d1ec5e24e3147e361f4008",
+      "exported_sha256": "15540e97cc16baf435d9eeb90193aba9c3bf99276220937fe2242e39bc05297a"
+    },
+    {
+      "path": "hardware-preflight/summary.json",
+      "original_sha256": "5683725edfb05cbedd53ee80f58c0538cf470602022157216bc892ea8bf5bb54",
+      "exported_sha256": "5683725edfb05cbedd53ee80f58c0538cf470602022157216bc892ea8bf5bb54"
+    },
+    {
+      "path": "protocol-model.json",
+      "original_sha256": "55a3616225b11b1fe3dfa3cc61782f71518ed4254778b5c6fe5660ff72173142",
+      "exported_sha256": "55a3616225b11b1fe3dfa3cc61782f71518ed4254778b5c6fe5660ff72173142"
+    },
+    {
+      "path": "unit-tests.log",
+      "original_sha256": "75a14d066634c8ff4f8fe81863e5e813d021c4ac1aae9682f98cb622a181e22b",
+      "exported_sha256": "75a14d066634c8ff4f8fe81863e5e813d021c4ac1aae9682f98cb622a181e22b"
+    }
+  ],
+  "export_time_source_sha256": {
+    "run.py": "1e6b7bab0ba0bcba8229d2eee83d04475a3670b08d5f300e87a3c6416d875107",
+    "model.py": "255eb110f842a6e5f1bb136860ccdf0a77334260d929b183a82025d95c986c42",
+    "src/overlap.cu": "04446c3897e01f89643902a01723b29947ba19b766e751e1dd9131f68c5b682c",
+    "scripts/build.py": "7e92ec3a6ed5ad5cc2b43f5e81e94ef99a90f8c4885527f5028bdd789eaf3e67",
+    "scripts/export_evidence.py": "f2c2d166bd7c860d6ad3b459e89eb715303aca87e5877d7654e424fcceda2eac",
+    "tests/test_protocol.py": "1d0ada579d32ee4a71a5a1b16437f8d21784c6cd1dfb3348f3fed3bb548333d7"
+  },
+  "note": "Run metadata hashes refer to original local bytes. This receipt maps originals to redacted exports. Export-time source hashes are not a claim that every historical run used the final source.",
+  "redactions": [
+    "project directory",
+    "workspace directory",
+    "home directory",
+    "local hostname"
+  ]
+}

@@ -1,0 +1,12 @@
+test_benefit_regions (test_protocol.ProtocolTests.test_benefit_regions) ... ok
+test_correctness_precedes_performance (test_protocol.ProtocolTests.test_correctness_precedes_performance) ... ok
+test_early_signal_has_stale_witness (test_protocol.ProtocolTests.test_early_signal_has_stale_witness) ... ok
+test_missing_ack_has_overwrite_witness (test_protocol.ProtocolTests.test_missing_ack_has_overwrite_witness) ... ok
+test_missing_duplicate_or_bad_timing_rejected (test_protocol.ProtocolTests.test_missing_duplicate_or_bad_timing_rejected) ... ok
+test_ordered_protocol_exhaustion (test_protocol.ProtocolTests.test_ordered_protocol_exhaustion) ... ok
+test_slower_rank_is_critical_path (test_protocol.ProtocolTests.test_slower_rank_is_critical_path) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.001s
+
+OK

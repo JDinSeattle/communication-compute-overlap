@@ -1,0 +1,56 @@
+{
+  "timestamp_utc": "2026-09-07T21:39:22.800165+00:00",
+  "scope": "local CPU/single-GPU and hardware gates; two-GPU acceptance pending",
+  "pass": true,
+  "checks": [
+    {
+      "name": "C_CPU_tests",
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "<PROJECT_ROOT>/tests",
+        "-v"
+      ],
+      "returncode": 0,
+      "expected_returncode": 0,
+      "pass": true,
+      "stdout": "",
+      "stderr": "test_benefit_regions (test_protocol.ProtocolTests.test_benefit_regions) ... ok\ntest_correctness_precedes_performance (test_protocol.ProtocolTests.test_correctness_precedes_performance) ... ok\ntest_early_signal_has_stale_witness (test_protocol.ProtocolTests.test_early_signal_has_stale_witness) ... ok\ntest_missing_ack_has_overwrite_witness (test_protocol.ProtocolTests.test_missing_ack_has_overwrite_witness) ... ok\ntest_missing_duplicate_or_bad_timing_rejected (test_protocol.ProtocolTests.test_missing_duplicate_or_bad_timing_rejected) ... ok\ntest_ordered_protocol_exhaustion (test_protocol.ProtocolTests.test_ordered_protocol_exhaustion) ... ok\ntest_slower_rank_is_critical_path (test_protocol.ProtocolTests.test_slower_rank_is_critical_path) ... ok\n\n----------------------------------------------------------------------\nRan 7 tests in 0.001s\n\nOK\n"
+    },
+    {
+      "name": "C_compute_reference",
+      "command": [
+        "compute-sanitizer",
+        "--tool",
+        "memcheck",
+        "--error-exitcode=9",
+        "<PROJECT_ROOT>/build/overlap",
+        "--self-test"
+      ],
+      "returncode": 0,
+      "expected_returncode": 0,
+      "pass": true,
+      "stdout": "========= COMPUTE-SANITIZER\n{\"scope\":\"single_gpu_compute_only\",\"status\":\"pass\",\"cases\":72,\"communication_tested\":false,\"reference\":\"host_affine_composition\"}\n========= ERROR SUMMARY: 0 errors\n",
+      "stderr": ""
+    },
+    {
+      "name": "C_two_gpu_gate",
+      "command": [
+        "python3",
+        "<PROJECT_ROOT>/run.py",
+        "--binary",
+        "<PROJECT_ROOT>/build/overlap",
+        "--out",
+        "<PROJECT_ROOT>/evidence/local/final-two-gpu-gate"
+      ],
+      "returncode": 2,
+      "expected_returncode": 2,
+      "pass": true,
+      "stdout": "Blocked: two peer-accessible GPUs required. No overlap measurements recorded.\n",
+      "stderr": ""
+    }
+  ]
+}

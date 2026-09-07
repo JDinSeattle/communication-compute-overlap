@@ -1,0 +1,140 @@
+$ ['cmake', '-S', '/tmp/commnet-overlap-verified/mscclpp', '-B', '/tmp/commnet-overlap-verified/build', '-DCMAKE_BUILD_TYPE=Release', '-DCMAKE_INSTALL_PREFIX=/tmp/commnet-overlap-verified/install', '-DMSCCLPP_USE_CUDA=ON', '-DMSCCLPP_BYPASS_GPU_CHECK=ON', '-DMSCCLPP_GPU_ARCHS=89', '-DMSCCLPP_USE_IB=OFF', '-DMSCCLPP_USE_GDRCOPY=OFF', '-DMSCCLPP_BUILD_PYTHON_BINDINGS=OFF', '-DMSCCLPP_BUILD_EXT_NCCL=OFF', '-DMSCCLPP_BUILD_EXT_COLLECTIVES=OFF', '-DFETCHCONTENT_SOURCE_DIR_JSON=/tmp/commnet-overlap-verified/json', '-DNUMA_INCLUDE_DIR=<WORKSPACE>/.upstream/sysroot/usr/include', '-DNUMA_LIBRARIES=/usr/lib/x86_64-linux-gnu/libnuma.so.1.0.0']
+-- The CXX compiler identification is GNU 15.2.0
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Found Git: /usr/bin/git (found version "2.53.0")
+-- Bypassing GPU check: using NVIDIA/CUDA.
+-- Found CUDAToolkit: /usr/local/cuda-13.2/targets/x86_64-linux/include;/usr/local/cuda-13.2/targets/x86_64-linux/include/cccl (found version "13.2.86")
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+-- Found Threads: TRUE
+-- GPU architectures: 89
+-- The CUDA compiler identification is NVIDIA 13.2.86 with host compiler GNU 15.2.0
+-- Detecting CUDA compiler ABI info
+-- Detecting CUDA compiler ABI info - done
+-- Check for working CUDA compiler: /usr/local/cuda-13.2/bin/nvcc - skipped
+-- Detecting CUDA compile features
+-- Detecting CUDA compile features - done
+-- Finding CCCL components: Thrust;CUB;libcudacxx
+-- Found CUB: /usr/local/cuda-13.2/targets/x86_64-linux/lib/cmake/cub/cub-config.cmake (found suitable version "3.2.0.0", minimum required is "3.2.0.0")
+-- Found libcudacxx: /usr/local/cuda-13.2/targets/x86_64-linux/lib/cmake/libcudacxx/libcudacxx-config.cmake (found suitable exact version "3.2.0.0")
+-- Found Thrust: /usr/local/cuda-13.2/targets/x86_64-linux/lib/cmake/thrust/thrust-config.cmake (found suitable exact version "3.2.0.0")
+-- Found CCCL: /usr/local/cuda-13.2/targets/x86_64-linux/lib/cmake/cccl/cccl-config.cmake (found version "3.2.0.0")
+-- C++ standard: C++20
+-- CUDA toolkit version: 13.2.86
+-- CUDA language standard: C++20
+-- Found NUMA: <WORKSPACE>/.upstream/sysroot/usr/include
+-- Using the multi-header code from /tmp/commnet-overlap-verified/json/include/
+CMake Warning (dev) at src/core/CMakeLists.txt:75 (install):
+  Policy CMP0177 is not set: install() DESTINATION paths are normalized.  Run
+  "cmake --help-policy CMP0177" for policy details.  Use the cmake_policy
+  command to set the policy and suppress this warning.
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+CMake Warning (dev) at src/core/CMakeLists.txt:77 (install):
+  Policy CMP0177 is not set: install() DESTINATION paths are normalized.  Run
+  "cmake --help-policy CMP0177" for policy details.  Use the cmake_policy
+  command to set the policy and suppress this warning.
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+-- Configuring done (1.4s)
+-- Generating done (0.0s)
+-- Build files have been written to: /tmp/commnet-overlap-verified/build
+$ ['cmake', '--build', '/tmp/commnet-overlap-verified/build', '-j4']
+[  2%] Building CXX object src/core/CMakeFiles/mscclpp_obj.dir/bootstrap/socket.cc.o
+[  5%] Building CXX object src/core/CMakeFiles/mscclpp_obj.dir/algorithm.cc.o
+[  8%] Building CXX object src/core/CMakeFiles/mscclpp_obj.dir/bootstrap/bootstrap.cc.o
+[ 11%] Building CXX object src/core/CMakeFiles/mscclpp_obj.dir/c_style_remnants.cc.o
+[ 13%] Building CXX object src/core/CMakeFiles/mscclpp_obj.dir/communicator.cc.o
+[ 16%] Building CXX object src/core/CMakeFiles/mscclpp_obj.dir/connection.cc.o
+[ 19%] Building CXX object src/core/CMakeFiles/mscclpp_obj.dir/context.cc.o
+[ 22%] Building CXX object src/core/CMakeFiles/mscclpp_obj.dir/core.cc.o
+[ 25%] Building CXX object src/core/CMakeFiles/mscclpp_obj.dir/debug.cc.o
+[ 27%] Building CXX object src/core/CMakeFiles/mscclpp_obj.dir/endpoint.cc.o
+[ 30%] Building CXX object src/core/CMakeFiles/mscclpp_obj.dir/env.cpp.o
+[ 33%] Building CXX object src/core/CMakeFiles/mscclpp_obj.dir/errors.cc.o
+[ 36%] Building CUDA object src/core/CMakeFiles/mscclpp_obj.dir/executor/execution_kernel.cu.o
+[ 38%] Building CXX object src/core/CMakeFiles/mscclpp_obj.dir/executor/execution_plan.cc.o
+[ 41%] Building CXX object src/core/CMakeFiles/mscclpp_obj.dir/executor/executor.cc.o
+[ 44%] Building CXX object src/core/CMakeFiles/mscclpp_obj.dir/fifo.cc.o
+[ 47%] Building CXX object src/core/CMakeFiles/mscclpp_obj.dir/gdr.cc.o
+[ 50%] Building CXX object src/core/CMakeFiles/mscclpp_obj.dir/gpu_ipc_mem.cc.o
+[ 52%] Building CXX object src/core/CMakeFiles/mscclpp_obj.dir/gpu_utils.cc.o
+[ 55%] Building CXX object src/core/CMakeFiles/mscclpp_obj.dir/ib.cc.o
+[ 58%] Building CXX object src/core/CMakeFiles/mscclpp_obj.dir/ibverbs_wrapper.cc.o
+[ 61%] Building CXX object src/core/CMakeFiles/mscclpp_obj.dir/logger.cc.o
+[ 63%] Building CXX object src/core/CMakeFiles/mscclpp_obj.dir/memory_channel.cc.o
+[ 66%] Building CXX object src/core/CMakeFiles/mscclpp_obj.dir/mlx5dv_wrapper.cc.o
+[ 69%] Building CXX object src/core/CMakeFiles/mscclpp_obj.dir/npkit/npkit.cc.o
+[ 72%] Building CXX object src/core/CMakeFiles/mscclpp_obj.dir/numa.cc.o
+[ 75%] Building CXX object src/core/CMakeFiles/mscclpp_obj.dir/port_channel.cc.o
+[ 77%] Building CXX object src/core/CMakeFiles/mscclpp_obj.dir/proxy.cc.o
+[ 80%] Building CXX object src/core/CMakeFiles/mscclpp_obj.dir/registered_memory.cc.o
+[ 83%] Building CXX object src/core/CMakeFiles/mscclpp_obj.dir/semaphore.cc.o
+[ 86%] Building CXX object src/core/CMakeFiles/mscclpp_obj.dir/switch_channel.cc.o
+[ 88%] Building CXX object src/core/CMakeFiles/mscclpp_obj.dir/unix_socket.cc.o
+[ 91%] Building CXX object src/core/CMakeFiles/mscclpp_obj.dir/utils.cc.o
+[ 94%] Building CXX object src/core/CMakeFiles/mscclpp_obj.dir/utils_internal.cc.o
+[ 94%] Built target mscclpp_obj
+[ 97%] Linking CXX static library ../../lib/libmscclpp_static.a
+[100%] Linking CXX shared library ../../lib/libmscclpp.so
+[100%] Built target mscclpp_static
+[100%] Built target mscclpp
+$ ['cmake', '--install', '/tmp/commnet-overlap-verified/build']
+-- Install configuration: "Release"
+-- Installing: /tmp/commnet-overlap-verified/install/./lib/libmscclpp.so.0.9.0
+-- Installing: /tmp/commnet-overlap-verified/install/./lib/libmscclpp.so.0
+-- Set non-toolchain portion of runtime path of "/tmp/commnet-overlap-verified/install/./lib/libmscclpp.so.0.9.0" to ""
+-- Installing: /tmp/commnet-overlap-verified/install/./lib/libmscclpp.so
+-- Installing: /tmp/commnet-overlap-verified/install/./lib/libmscclpp_static.a
+-- Installing: /tmp/commnet-overlap-verified/install/include/mscclpp
+-- Installing: /tmp/commnet-overlap-verified/install/include/mscclpp/errors.hpp
+-- Installing: /tmp/commnet-overlap-verified/install/include/mscclpp/switch_channel.hpp
+-- Installing: /tmp/commnet-overlap-verified/install/include/mscclpp/semaphore.hpp
+-- Installing: /tmp/commnet-overlap-verified/install/include/mscclpp/copy_device.hpp
+-- Installing: /tmp/commnet-overlap-verified/install/include/mscclpp/poll_device.hpp
+-- Installing: /tmp/commnet-overlap-verified/install/include/mscclpp/concurrency_device.hpp
+-- Installing: /tmp/commnet-overlap-verified/install/include/mscclpp/port_channel.hpp
+-- Installing: /tmp/commnet-overlap-verified/install/include/mscclpp/atomic_device.hpp
+-- Installing: /tmp/commnet-overlap-verified/install/include/mscclpp/switch_channel_device.hpp
+-- Installing: /tmp/commnet-overlap-verified/install/include/mscclpp/gpu_utils.hpp
+-- Installing: /tmp/commnet-overlap-verified/install/include/mscclpp/fifo_device.hpp
+-- Installing: /tmp/commnet-overlap-verified/install/include/mscclpp/numa.hpp
+-- Installing: /tmp/commnet-overlap-verified/install/include/mscclpp/algorithm.hpp
+-- Installing: /tmp/commnet-overlap-verified/install/include/mscclpp/ext
+-- Installing: /tmp/commnet-overlap-verified/install/include/mscclpp/ext/collectives
+-- Installing: /tmp/commnet-overlap-verified/install/include/mscclpp/ext/collectives/algorithm_collection_builder.hpp
+-- Installing: /tmp/commnet-overlap-verified/install/include/mscclpp/ext/nccl
+-- Installing: /tmp/commnet-overlap-verified/install/include/mscclpp/ext/nccl/nccl.h
+-- Installing: /tmp/commnet-overlap-verified/install/include/mscclpp/packet_device.hpp
+-- Installing: /tmp/commnet-overlap-verified/install/include/mscclpp/assert_device.hpp
+-- Installing: /tmp/commnet-overlap-verified/install/include/mscclpp/utils.hpp
+-- Installing: /tmp/commnet-overlap-verified/install/include/mscclpp/core.hpp
+-- Installing: /tmp/commnet-overlap-verified/install/include/mscclpp/fifo.hpp
+-- Installing: /tmp/commnet-overlap-verified/install/include/mscclpp/memory_channel_device.hpp
+-- Installing: /tmp/commnet-overlap-verified/install/include/mscclpp/gpu_data_types.hpp
+-- Installing: /tmp/commnet-overlap-verified/install/include/mscclpp/executor.hpp
+-- Installing: /tmp/commnet-overlap-verified/install/include/mscclpp/device.hpp
+-- Installing: /tmp/commnet-overlap-verified/install/include/mscclpp/gpu.hpp
+-- Installing: /tmp/commnet-overlap-verified/install/include/mscclpp/port_channel_device.hpp
+-- Installing: /tmp/commnet-overlap-verified/install/include/mscclpp/memory_channel.hpp
+-- Installing: /tmp/commnet-overlap-verified/install/include/mscclpp/npkit
+-- Installing: /tmp/commnet-overlap-verified/install/include/mscclpp/npkit/npkit_event.hpp
+-- Installing: /tmp/commnet-overlap-verified/install/include/mscclpp/npkit/npkit.hpp
+-- Installing: /tmp/commnet-overlap-verified/install/include/mscclpp/npkit/npkit_struct.hpp
+-- Installing: /tmp/commnet-overlap-verified/install/include/mscclpp/proxy.hpp
+-- Installing: /tmp/commnet-overlap-verified/install/include/mscclpp/env.hpp
+-- Installing: /tmp/commnet-overlap-verified/install/include/mscclpp/bulk_device.hpp
+-- Installing: /tmp/commnet-overlap-verified/install/include/mscclpp/version.hpp.in
+-- Installing: /tmp/commnet-overlap-verified/install/include/mscclpp/semaphore_device.hpp
+-- Installing: /tmp/commnet-overlap-verified/install/include/mscclpp/version.hpp
+$ ['cmake', '-S', '<PROJECT_ROOT>', '-B', '<PROJECT_ROOT>/build', '-DMSCCLPP_ROOT=/tmp/commnet-overlap-verified/install', '-DCMAKE_CUDA_ARCHITECTURES=89', '-DCMAKE_BUILD_TYPE=Release']
+-- Configuring done (0.0s)
+-- Generating done (0.0s)
+-- Build files have been written to: <PROJECT_ROOT>/build
+$ ['cmake', '--build', '<PROJECT_ROOT>/build', '-j4']
+[ 50%] Linking CUDA executable overlap
+[100%] Built target overlap

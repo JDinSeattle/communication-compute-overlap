@@ -1,0 +1,34 @@
+{
+  "scope": "finite abstract state exploration; no device memory-order proof",
+  "correct": {
+    "safe": true,
+    "states": 25,
+    "terminal_states": 1,
+    "witness": null
+  },
+  "missing_consumer_ack": {
+    "safe": false,
+    "states": 18,
+    "witness": [
+      "compute(1)",
+      "put(1)",
+      "DMA-complete(1)",
+      "signal(1)",
+      "flush(1)",
+      "compute(2)",
+      "put(2)",
+      "DMA-complete(2)",
+      "consume(1) sees generation 2"
+    ]
+  },
+  "signal_before_completion": {
+    "safe": false,
+    "states": 7,
+    "witness": [
+      "compute(1)",
+      "put(1)",
+      "signal(1)",
+      "consume(1) sees generation 0"
+    ]
+  }
+}
