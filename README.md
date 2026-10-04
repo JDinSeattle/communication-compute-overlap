@@ -1,64 +1,56 @@
 # Communication–Compute Overlap
 
-A small **MSCCL++ PortChannel** experiment for determining when chunked GPU production and asynchronous data movement improve end-to-end completion time.
+A generation-scoped buffer ownership model and MSCCL++ PortChannel study. Paired trials use the slower rank, complete two-rank evidence, an order-statistic interval, and a predeclared materiality threshold.
 
-**Status:** the real CUDA extension compiles; 72 single-GPU compute/reference cases pass NVIDIA Compute Sanitizer; CPU protocol and analysis tests pass. **Two-GPU communication correctness and overlap performance remain unvalidated.**
+## Confirmed qualification results
 
-The [September maintenance review](docs/MAINTENANCE_2026-09-07.md) adds rank/preflight admission, recorded launch failures and uncertainty-aware comparisons. [Hiring and upstream research](docs/MARKET_REVIEW_2026-09-07.md) explains the scope.
+These are the user-confirmed results from a separate cloud test run, recorded in the experience bank. The device, workload, timing round, and counting boundaries below remain part of each result. They are distinct from the CPU checks performed in this checkout; cloud-hosted testing does not imply production deployment.
 
-## The experiment
+- Implemented a generation-scoped source-ownership protocol: a single-CTA producer writes independent source slices per generation, the consumer ACKs after finishing, and reuse happens only after the matching ACK, because an initiated transfer is not proof that the consumer finished reading.
 
-Each rank computes a generation-dependent `uint32` payload and sends it to the other GPU using the pinned MSCCL++ CudaIpc connection and host proxy. Three configurations share the same compute workload:
+- Replayed the 72 single-GPU compute/reference cases (3 counts 257/4096/65536 × 4 strengths 1/4/16/64 rounds × 2 rank modes × 3 generations) under seed=2026 alongside 20 CPU protocol regressions, and all payload and untouched-tail values matched an independent CPU affine-composition reference.
 
-1. **Serial:** compute the full message, then issue the full transfer.
-2. **16 KiB chunks:** publish each completed source slice while producing the next.
-3. **256 KiB chunks:** the same protocol with larger chunks.
+- Confirmed two faulty protocol models fail as designed: removing the ACK constraint overwrites the old buffer at generation 2, and removing the generation match accepts a stale ACK.
 
-The single-CTA producer uses system fences before publishing to the proxy. Source slices remain immutable until local completion; a host bootstrap barrier acknowledges consumption before the destination can be overwritten in the next iteration. No delay is used to make a race disappear.
+- Admitted two-rank outputs strictly: six fixtures (missing rank, duplicate rank, different payload, NaN time, wrong generation, timeout) were each rejected, and rejection terminates and reaps both child processes.
 
-The independent host reference composes the payload's affine transform by exponentiation, rather than repeating the GPU's compute loop. Every received element is checked against its rank and iteration, with a checksum retained in each record. This is a controlled integer workload, not a claim about training or Tensor Core throughput.
+- Built a conservative paired-trial decision over 31 clearly labeled synthetic pairs, with speedup defined as serial slower-rank time divided by chunked slower-rank time, randomized order and the two ranks never treated as independent samples: assuming a paired median of 1.06 and order statistics 10 and 22 at [0.99, 1.12], the distribution-free median interval covers about 97%, but the lower bound does not clear the pre-set 1.03 materiality threshold, so the benefit stays uncertain.
 
-## Evidence
+- Kept the two-GPU path unqualified while pinning down the intended design — two peer-accessible devices on one machine, serial and chunked paths, chunk=16 KiB, slower rank as trial time — because the gate exits 2 and publishes no performance results.
 
-| Check | Local result |
+## Implementation and reproduction
+
+| Contract | Implementation |
 |---|---|
-| Pinned MSCCL++ library and CUDA extension | Built with CUDA 13.2, `sm_89`, CudaIpc; IB/GDRCopy disabled |
-| CPU regression suite | 20 tests passed |
-| Finite protocol model | Ordered 3-generation model explored 25 states; missing acknowledgement and early publication each produced a counterexample |
-| Real GPU compute/reference test | 72 cases passed; Compute Sanitizer memcheck reported 0 errors |
-| Two-GPU eligibility | Correctly blocked on the one-GPU workstation |
-| Communication correctness / actual overlap / speedup | **Pending target hardware** |
+| Ownership model and mutations | [model.py](model.py) |
+| Rank acceptance and cleanup | [run.py](run.py) |
+| Paired decision procedure | [analysis.py](analysis.py) |
+| Native compute and intended transport | [src](src) |
 
-See [design and happens-before reasoning](docs/DESIGN.md), [the local report](docs/REPORT.md), [the target runbook](docs/TWO_GPU_RUNBOOK.md), [original scope](PROJECT_SPEC.md), and [the evidence snapshot](evidence/snapshot/).
-
-## Build and check
-
-Requirements: Linux, Git, CMake ≥ 3.24, a C++20-capable CUDA toolchain and NUMA development headers/library. The tested toolkit is CUDA 13.2. Use the architecture of the actual GPU.
+Run each experiment into a fresh output directory to preserve earlier evidence.
 
 ```bash
 python3 -m unittest discover -s tests -v
-python3 model.py
-python3 scripts/build.py --arch 89
-build/overlap --self-test
-compute-sanitizer --tool memcheck --error-exitcode=9 build/overlap --self-test
-build/overlap --preflight
+python3 scripts/export_evidence.py --verify evidence/maintenance-20260907
+python3 run.py --help
 ```
 
-The builder downloads exact commits from `upstream.lock.json`, builds MSCCL++ without IB, GDRCopy, Python bindings or external collectives, and links this extension. If NUMA is installed outside standard paths, pass `--numa-include` and `--numa-library`.
+Regression entry points: [tests/test_protocol.py](tests/test_protocol.py), [tests/test_acceptance.py](tests/test_acceptance.py).
 
-On a machine with two peer-accessible GPUs:
+## Scope and evidence
 
-```bash
-python3 run.py --binary build/overlap --out evidence/local/two-gpu-run
-```
+The two-GPU transport path remains unqualified. Synthetic 31-pair statistics validate the decision procedure and are not measured transport performance.
 
-The supervisor reaps both ranks on failure or timeout. It accepts performance samples only after both ranks report correct, complete sequences. Seven process-repeat pairs compare the slower-rank completion time by default. An exact binomial/order-statistic median interval must clear a ±5% margin before a benefit or regression label is emitted. Fewer than six pairs cannot form a finite 95% interval under this method; noisy trials remain inconclusive. These are pointwise intervals, not simultaneous guarantees across the parameter grid. Profiles and target-host correctness still require review before qualification.
+- There is no two-GPU measurement: the gate exits 2 and publishes no performance results, and overlap is the research object rather than a verified communication-overlap result.
 
-```bash
-python3 scripts/export_evidence.py --out evidence/new-snapshot
-python3 scripts/export_evidence.py --verify evidence/new-snapshot
-```
+- The 1.06 median and the [0.99, 1.12] order-statistic interval come from 31 clearly labeled synthetic pairs and test only the decision procedure; they are not a two-GPU measurement.
 
-## Role relevance
+- The lower bound does not clear the 1.03 materiality threshold and the interval includes no benefit, so no victory is claimed; the interval is pointwise and is not a simultaneous confidence guarantee over the entire parameter grid.
 
-This project demonstrates GPU/host communication interfaces, source-buffer ownership, release/acquire reasoning, counterexample-driven protocol checks and performance gating. [Interview notes](docs/INTERVIEW.md) contain evidence-safe resume wording. CPU models and a single-GPU compute check cannot establish remote device memory ordering.
+- The 25-state abstract protocol exhausts only a finite model with three generations, fixed participants and a given message order; it can surface missing-ACK counterexamples but does not prove the real system deadlock-free, nor CUDA memory ordering, DMA/RDMA visibility or proxy-thread progress.
+
+- A source slice can be reused only after the corresponding generation ACK; initiation alone is not safety, and single-GPU tests cannot prove real DMA/RDMA visibility.
+
+- Environment scope: Ubuntu 24.04 and a single RTX 4090, C++20, CUDA 13.2, Python 3.14; the real PortChannel two-GPU path remains unqualified, and the pinned MSCCL++ 0.10.1.post1.dev6+g626734ed7 package is the study's fixed revision, not a rewrite of the historical pin.
+
+The [previous README](README.historical.md) preserves earlier setup details, design discussion, and historical measurements. Its older counts, splits, versions, and timing cohorts must not be mixed with the confirmed round above. [Result provenance](docs/experience-bank-results.json) retains the confirmed bullet text; [checkout validation](docs/checkout-validation.md) records what was actually rerun here.
